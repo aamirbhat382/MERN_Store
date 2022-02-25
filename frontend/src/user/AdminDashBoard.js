@@ -36,7 +36,7 @@ let location = useLocation();
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link text-light fw-bold"   to="/admin/dashboard/home" >
+            <NavLink className="nav-link text-light fw-bold"   to="products" >
               Products
             </NavLink>
           </li>

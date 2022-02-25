@@ -10,6 +10,8 @@ import UserDashBoard from './user/UserDashBoard'
 import AdminDashBoard from './user/AdminDashBoard'
 import AddCategory from'./admin/AddCategory'
 import AddProduct from'./admin/AddProduct'
+import ManageProducts from './admin/ManageProducts'
+import UpdateProduct from './admin/UpdateProduct'
 
 const AllRoutes = () => {
   return (
@@ -25,6 +27,10 @@ const AllRoutes = () => {
             <Route path="home"  element={< AddCategory/>}/>
             <Route path="create/category"  element={< AddCategory/>}/>
             <Route path="create/product"  element={< AddProduct/>}/>
+            <Route path="products"  element={< ManageProducts/>}>
+              <Route path="update/:productId"  element={<UpdateProduct/>}/>
+            </Route>
+            
         </Route>
           <Route path="/user/dashboard" element={
               <PrivateRoutes >
