@@ -7,7 +7,7 @@ const Signin = () => {
     const [values, setValues ] = useState({
     email:"",
     password:"",
-    error:"",
+    error:false,
     loading:false,
     didRedirect:false
   });
@@ -22,7 +22,9 @@ const onSubmit = event =>{
   event.preventDefault()
   setValues({...values,error:false, loading:true})
   signInMethod({email,password})
+  
     .then(data=>{
+      
         if(data.error){
            setValues({...values, error:data.error, loading:false})
         }else{
