@@ -1,4 +1,4 @@
-import React from "react";
+import React,  { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./core/Home";
 import Signup from "./user/Signup"
@@ -12,13 +12,32 @@ import AddCategory from'./admin/AddCategory'
 import AddProduct from'./admin/AddProduct'
 import ManageProducts from './admin/ManageProducts'
 import UpdateProduct from './admin/UpdateProduct'
+import { CartContext } from './CartContext';
+import { getCart, storeCart } from './helper';
+import Cart from "./user/Cart";
 
 const AllRoutes = () => {
+  const [ cart, setCart ] = useState({});
+  // Fetch cart from local storage
+  useEffect(() => {
+    getCart().then(cart => {
+      setCart(JSON.parse(cart));
+    });
+  }, []);
+  
+  useEffect(() => {
+      storeCart(JSON.stringify(cart));
+  }, [cart]);
+
   return (
      <BrowserRouter>
+     <CartContext.Provider value={{ cart, setCart }}>
       <Routes>
         <Route path="/"  element={<Home />}>
         </Route>
+        <Route path="/cart"  element={<Cart/>}>
+        </Route>
+       
         <Route path='/signup' element={<Signup />}>
         </Route>
         <Route path="/signin"  element={<Signin />}>
@@ -39,6 +58,7 @@ const AllRoutes = () => {
             }
           ></Route>
       </Routes>
+      </CartContext.Provider>
     </BrowserRouter>
   );
 };

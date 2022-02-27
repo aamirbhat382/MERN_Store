@@ -1,12 +1,14 @@
 import React from "react";
+import { useContext, useState, useEffect } from "react";
+import { CartContext } from "../CartContext";
 import "../styles.css";
 import Base from "./Base";
-import { useEffect, useState } from "react";
 import { getProducts } from "../admin/helper/adminapicall";
-import { Link } from "react-router-dom";
+import { addToCart } from "./helper/Cart";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const { cart, setCart } = useContext(CartContext);
   const preload = () => {
     getProducts().then((data) => {
       console.log(data);
@@ -33,18 +35,24 @@ const Home = () => {
     );
   };
 
+  const addToCart = (event, product) => {
+    event.preventDefault();
+    let _cart = { ...cart }; // { items: {}}
+    if (!_cart.items) {
+      _cart.items = {};
+    }
+    if (_cart.items[product._id]) {
+      _cart.items[product._id] += 1;
+    } else {
+      _cart.items[product._id] = 1;
+    }
 
-
-const HandleAddtoCart = (item)=>{
-  let cartItem = [item]
-  if (localStorage.getItem('Cart') == null) {
-    let Cart = {}
- 
-} else {
-    Cart = JSON.parse(localStorage.getItem('Cart'));
-    Cart.push(cartItem)
-}
-}
+    if (!_cart.totalItems) {
+      _cart.totalItems = 0;
+    }
+    _cart.totalItems += 1;
+    setCart(_cart);
+  };
 
   return (
     <Base>
@@ -53,7 +61,7 @@ const HandleAddtoCart = (item)=>{
           {products &&
             products.map((product) => {
               return (
-                <div className="col-md-3 mb-2" key={product._id}> 
+                <div className="col-md-3 mb-2" key={product._id}>
                   <div className="card bg-dark rounded">
                     <div
                       className="bg-img"
@@ -65,9 +73,14 @@ const HandleAddtoCart = (item)=>{
                       <h1>{product.price}</h1>
                       <h6 className="card-title">{product.name}</h6>
                       <p className="card-text">{product.description}</p>
-                      <Link   onClick={(()=>{HandleAddtoCart(product.description)})} className="btn btn-primary">
+                      <button
+                        onClick={(e) => {
+                          addToCart(e, product);
+                        }}
+                        className="btn btn-primary"
+                      >
                         Add To Cart
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>
