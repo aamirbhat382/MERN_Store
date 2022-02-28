@@ -4,7 +4,7 @@ export const getCart = () => {
         resolve(cart);
     })
 }
-
+// @Marked as bug ?  
 export const storeCart = (cart) => {
     window.localStorage.setItem('cart', JSON.stringify(cart));
 }
